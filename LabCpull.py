@@ -24,6 +24,7 @@ def compare(file,password):#takes in the file array and password array created t
              test = ''.join(map(str,password[i])) #since the password creation is a cartesian product it will be joined together to create a string
              if len(element) != 3: #case to check if the file was set up correctly
                  print("line is not set up correctly")
+                return
              elif element[2] == hash_with_sha256(test+element[1]):#checks the 3 element which is the hashed passcodeand compares it to the concatenation of the created password with the salt value of the user 
                  print("Password: "+test+" unlocks "+element[0]+"'s account") 
              elif j+1 == 100: #deterimnes that the password was ot found in the list
