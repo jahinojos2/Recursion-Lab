@@ -87,24 +87,34 @@ def createList(firstFile, SecondFile): #reads the files and stores each one in a
         listReturn.addId(list2[j])
     return listReturn
 def mergeLists(list1, list2): #this method is in charge of sorting all the list that are passed on by the mergeSortist method, for it to later return one single sorted linked list
-    temp = None
-
-    if list1 and list2 is None:
-        return None
+    temp = IDList(None)
+    fake_head = temp
     if list1 is None:
-        return list2
-    if list2 is None:
-        return list1
-    if int(list1.iD) <= int(list2.iD):
-        temp = list1
-        temp.nextID = mergeLists(list1.nextID,list2)
+        temp.nextID = list2
+    elif list2 is None:
+        temp.nextID = list1
     else:
-        temp = list2
-        temp.nextID = mergeLists(list1, list2.nextID)
+        while list1 or list2 is not None:
+            if list1 is None:
+                temp.nextID = list2
+                list2 = list2.nextID
+            elif list2 is None:
+                temp.nextID = list1
+                list1 = list1.nextID
+            elif int(list1.iD) <= int(list2.iD):
+                temp.nextID = list1
+                list1 = list1.nextID
+            else:
+                temp.nextID = list2
+                list2 = list2.nextID
+            temp = temp.nextID
+        temp = fake_head.nextID
     return temp
 
 def mergeSortList(head): #merge sort runs on O(nlog(n)) and is the most ideal but python doesn't really work with recursion so too many elements may exceed the limit of the amount of recursion calls that can be made
-    if head is None or head.nextID is None:#this method returns the final sorted list but it is in charge of calling the split function with every list that is returned and than calls the merge method to join everything together
+    if head is None:
+        return None
+    if head.nextID is None:#this method returns the final sorted list but it is in charge of calling the split function with every list that is returned and than calls the merge method to join everything together
         return head
     lefthalf, righthalf = listSplit(head)
     lefthalf = mergeSortList(lefthalf)
